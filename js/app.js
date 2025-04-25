@@ -1,44 +1,70 @@
+// DOM Elements
 const startGame = document.querySelector(".start-game");
 const games = document.querySelector(".game");
 const endGame = document.querySelector(".end-game");
 const startBtn = document.querySelector(".start-btn");
+const playAgain = document.querySelector(".play-again");
+const loadingBlock = document.querySelector(".center");
+const canfiti = document.querySelector(".cnft");
 const scr = document.querySelectorAll(".score");
-let isGameOver = false;
 const gamePlatform = document.querySelector(".game-platform");
-const playAgain = document.querySelector('.play-again')
-let imagesToLoad = 4;
-let imagesLoaded = 0;
+const screen = document.querySelector(".screen");
+
+// Canvas setup
+let cvs = document.querySelector(".canvas");
+let ctx = cvs.getContext("2d");
+
+// Game state variables
 let score = 0;
+let isGameOver = false;
+let xPos = 10;
+let yPos = 200;
+let grav = 1;
+let gap = 170;
+let pipe = [];
+pipe[0] = {
+  x: cvs.width,
+  y: Math.floor(Math.random() * -90),
+};
+
+// Sizes
 const birdW = 60,
   birdH = 50;
 const pipeW = 60,
   pipeH = 300;
-scr.forEach((text)=> text.textContent = score)
 
-let cvs = document.querySelector(".canvas");
-let ctx = cvs.getContext("2d");
-const screen = document.querySelector(".screen");
-
+// Images
 let clutch = new Image();
 let bg = new Image();
 let fg = new Image();
 let pipeUp = new Image();
 let pipeBottom = new Image();
-let gap = 170;
 
-let xPos = 10;
-let yPos = 200;
-let grav = 1;
+clutch.src = "assets/image/Layer 6.png";
+bg.src = "assets/image/Pattern.png";
+pipeUp.src = "assets/image/pipes.png";
+pipeBottom.src = "assets/image/pipes.png";
 
-document.addEventListener(
-  "DOMContentLoaded",
-  createBaloons("ballons", gamePlatform)
-);
+let imagesToLoad = 4;
+let imagesLoaded = 0;
+
+function checkLoaded() {
+  imagesLoaded++;
+  if (imagesLoaded === imagesToLoad) {
+    draw();
+  }
+}
+
+bg.onload = checkLoaded;
+pipeUp.onload = checkLoaded;
+pipeBottom.onload = checkLoaded;
+clutch.onload = checkLoaded;
+
+// Balloon creation
 function createBaloons(style, gameContent) {
   const platformWidth = gameContent.clientWidth;
   const platformHeight = gameContent.clientHeight;
   const halfHeight = platformHeight / 2;
-
   const totalBalloons = 9;
 
   for (let i = 0; i < totalBalloons; i++) {
@@ -52,6 +78,7 @@ function createBaloons(style, gameContent) {
     const size = Math.floor(Math.random() * 40) + 20;
     balloon.style.width = size + "px";
     balloon.style.height = "auto";
+
     if (i < 3) {
       balloon.style.top = "0px";
       balloon.style.left = Math.random() * (platformWidth - size) + "px";
@@ -66,33 +93,10 @@ function createBaloons(style, gameContent) {
     gamePlatform.appendChild(balloon);
   }
 }
-
-let pipe = [];
-pipe[0] = {
-  x: cvs.width,
-  y: Math.floor(Math.random() * -90),
-};
-
-function checkLoaded() {
-  imagesLoaded++;
-  if (imagesLoaded === imagesToLoad) {
-    draw();
-  }
-}
-
-clutch.src = "assets/image/Layer 6.png";
-bg.src = "assets/image/Pattern.png";
-pipeUp.src = "assets/image/pipes.png";
-pipeBottom.src = "assets/image/pipes.png";
-
-bg.onload = checkLoaded;
-pipeUp.onload = checkLoaded;
-pipeBottom.onload = checkLoaded;
-clutch.onload = checkLoaded;
-screen.addEventListener("click", moveUp);
-function moveUp() {
-  yPos -= 43;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  createBaloons("ballons", gamePlatform);
+  showBalloons();
+});
 
 function draw() {
   if (isGameOver) return;
@@ -111,9 +115,10 @@ function draw() {
         y: Math.floor(Math.random() * -180),
       });
     }
+
     if (pipe[i].x === xPos - 1) {
       score++;
-      scr.forEach((text)=> text.textContent = score)
+      scr.forEach((text) => (text.textContent = score));
     }
 
     if (
@@ -124,6 +129,7 @@ function draw() {
       isGameOver = true;
       endGames();
     }
+
     if (yPos + birdH >= cvs.height) {
       isGameOver = true;
       endGames();
@@ -134,16 +140,33 @@ function draw() {
   yPos += grav;
 
   requestAnimationFrame(draw);
+  hideBalloons();
 }
+
+function moveUp() {
+  yPos -= 43;
+}
+screen.addEventListener("click", moveUp);
+
+function endGames() {
+  setTimeout(() => {
+    endGame.classList.remove("hidden");
+    games.classList.add("hidden");
+    canfiti.classList.remove("hidden");
+    showBalloons();
+  }, 2000);
+}
+
 function hideBalloons() {
   document
     .querySelectorAll(".ballons")
     .forEach((b) => (b.style.display = "none"));
+  canfiti.classList.add("hidden");
 }
+
 function showBalloons() {
   document.querySelectorAll(".ballons").forEach((b) => {
     b.style.display = "block";
-    b.classList.add("for-away");
   });
 }
 
@@ -154,40 +177,51 @@ startBtn.addEventListener("click", () => {
   xPos = 10;
   yPos = 200;
   score = 0;
-
-  pipe = [];
-  pipe[0] = {
-    x: cvs.width,
-    y: Math.floor(Math.random() * -150),
-  };
-
+  pipe = [{ x: cvs.width, y: Math.floor(Math.random() * -150) }];
   draw();
   hideBalloons();
 });
 
-function endGames() {
-  setTimeout(() => {
-    endGame.classList.remove("hidden");
-    games.classList.add("hidden");
-    showBalloons();
-  }, 2000);
-}
-
-
-playAgain.addEventListener("click", ()=>{
+playAgain.addEventListener("click", () => {
   endGame.classList.add("hidden");
   games.classList.remove("hidden");
   isGameOver = false;
   xPos = 10;
   yPos = 200;
   score = 0;
-
-  pipe = [];
-  pipe[0] = {
-    x: cvs.width,
-    y: Math.floor(Math.random() * -150),
-  };
-
+  pipe = [{ x: cvs.width, y: Math.floor(Math.random() * -150) }];
   draw();
   hideBalloons();
-})
+});
+
+function waitForLoading(callback) {
+  showBalloons();
+  const images = startGame.querySelectorAll("img");
+  let loadedCount = 0;
+
+  if (images.length === 0) {
+    callback();
+    return;
+  }
+
+  images.forEach((img) => {
+    if (img.complete) {
+      loadedCount++;
+      if (loadedCount === images.length) callback();
+    } else {
+      img.addEventListener("load", () => {
+        loadedCount++;
+        if (loadedCount === images.length) callback();
+      });
+    }
+  });
+}
+
+waitForLoading(() => {
+  loadingBlock.classList.add("hidden");
+  startGame.classList.remove("hidden");
+  showBalloons();
+});
+
+scr.forEach((text) => (text.textContent = score));
+canfiti.classList.add("hidden");

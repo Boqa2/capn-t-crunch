@@ -284,28 +284,27 @@ body {
   position: relative;
   top: 10px;
 }
-.ends{
+.ends {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   position: relative;
-
 }
 
 .end-clutch > .captain {
   top: 60px;
   left: 60px;
 }
-.end-clutch > .karobka{
+.end-clutch > .karobka {
   top: 70px;
 }
-.end-clutch > .miska{
+.end-clutch > .miska {
   top: 150px;
 }
 
-.taping{
+.taping {
   position: relative;
   z-index: 2;
   top: 20px;
@@ -314,7 +313,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
-.end-score{
+.end-score {
   font-size: 40px;
   font-weight: 900;
   font-family: "Burbank";
@@ -323,18 +322,17 @@ body {
   top: 40px;
   text-transform: uppercase;
 }
-.taping > .tap{
+.taping > .tap {
   left: -60%;
-} 
-.again{
+}
+.again {
   position: absolute;
   bottom: 10%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-
 }
-.again-btn{
+.again-btn {
   width: 140px;
   border-radius: 30px;
   font-weight: 900;
@@ -347,11 +345,72 @@ body {
   left: 25%;
   z-index: 10;
 }
-.again-btn:focus-visible{
+.again-btn:focus-visible {
   outline: none;
 }
-.again-btn:active{
+.again-btn:active {
   transform: translateY(1px);
+}
+.center {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  color: white;
+  font-family: sans-serif;
+}
+.loading {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: loading 2s infinite;
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+    box-shadow: 1px 5px 2px #e65c00;
+  }
+  50% {
+    transform: rotate(180deg);
+    box-shadow: 1px 5px 2px #18b201;
+  }
+  100% {
+    transform: rotate(360deg);
+    box-shadow: 1px 5px 2px #0465c8;
+  }
+}
+.loading::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgb(255, 255, 255, 0.3);
+}
+.ani {
+  color: #737373;
+  position: absolute;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 150px;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: text 3s ease-in-out infinite;
+}
+@keyframes text {
+  50%{
+    color: black;
+  }
 }
 @keyframes flyDown {
   0% {
