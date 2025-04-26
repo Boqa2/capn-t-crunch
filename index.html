@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cap'n Crunch</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/app.js" defer></script>
     <link rel="icon" href="assets/image/Layer 6.png" />
   </head>
@@ -59,7 +60,9 @@
                 alt=""
               />
             </div>
-            <canvas class="canvas" width="320px" height="560px"></canvas>
+            <div class="canvas-container">
+              <canvas class="canvas"></canvas>
+            </div>
             <div class="cont-score">Score : <span class="score">0</span></div>
           </div>
           <div class="end-game hidden">

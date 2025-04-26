@@ -9,12 +9,17 @@ const canfiti = document.querySelector(".cnft");
 const scr = document.querySelectorAll(".score");
 const gamePlatform = document.querySelector(".game-platform");
 const screen = document.querySelector(".screen");
+const adaptation = document.querySelector(".canvas-container");
 
-// Canvas setup
 let cvs = document.querySelector(".canvas");
 let ctx = cvs.getContext("2d");
 
-// Game state variables
+
+let canvasWidth = 320;
+let canvasHeight = 560;
+
+cvs.width = canvasWidth;
+cvs.height = canvasHeight;
 let score = 0;
 let isGameOver = false;
 let xPos = 10;
@@ -74,11 +79,11 @@ function createBaloons(style, gameContent) {
     balloon.alt = "";
     balloon.style.position = "absolute";
     balloon.classList.add("for-away");
-
+    
     const size = Math.floor(Math.random() * 40) + 20;
     balloon.style.width = size + "px";
     balloon.style.height = "auto";
-
+    
     if (i < 3) {
       balloon.style.top = "0px";
       balloon.style.left = Math.random() * (platformWidth - size) + "px";
@@ -89,16 +94,18 @@ function createBaloons(style, gameContent) {
       balloon.style.left = platformWidth - size + "px";
       balloon.style.top = Math.random() * (halfHeight - size) + "px";
     }
-
+    
     gamePlatform.appendChild(balloon);
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
   createBaloons("ballons", gamePlatform);
-  showBalloons();
+  hideBalloons();
+  canfiti.classList.add("hidden");
 });
 
 function draw() {
+console.log(adaptation.clientWidth);
   if (isGameOver) return;
   ctx.clearRect(0, 0, cvs.width, cvs.height);
   ctx.drawImage(bg, 0, 0);
@@ -127,12 +134,12 @@ function draw() {
       (yPos <= pipe[i].y + pipeH || yPos + birdH >= pipe[i].y + pipeH + gap)
     ) {
       isGameOver = true;
-      endGames();
+      // endGames();
     }
 
     if (yPos + birdH >= cvs.height) {
       isGameOver = true;
-      endGames();
+      // endGames();
     }
   }
 
@@ -224,4 +231,3 @@ waitForLoading(() => {
 });
 
 scr.forEach((text) => (text.textContent = score));
-canfiti.classList.add("hidden");

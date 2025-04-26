@@ -1,0 +1,31 @@
+@media (max-width: 400px) {
+    * {
+      cursor: default;
+    }
+    body {
+        user-select: none;
+        pointer-events: auto;
+    }
+    .phone {
+      border-radius: 0;
+      border: 0;
+      width: 100%;
+      max-height: 100%;
+    }
+    .notch {
+      display: none;
+    }
+    .swipe {
+      display: none;
+    }
+    .screen {
+      cursor: none;
+      padding: 0;
+      height: 100%;
+      border-radius: 0;
+    }
+    .canvas-container{
+       width: 100%;
+       height: 100%;
+    }
+  }
