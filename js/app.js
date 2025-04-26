@@ -14,6 +14,23 @@ const adaptation = document.querySelector(".canvas-container");
 let cvs = document.querySelector(".canvas");
 let ctx = cvs.getContext("2d");
 
+document.addEventListener('touchstart', function (e) {
+  // Ожидаем, что это двойное касание или жест
+  if (e.touches.length > 1) {
+    e.preventDefault(); // Останавливаем масштабирование
+  }
+}, { passive: false });
+
+// Для предотвращения зума (если использовать gesture)
+document.addEventListener('gesturestart', function (e) {
+  e.preventDefault(); // Отключаем жесты масштабирования
+});
+
+games.addEventListener("touchstart", function (e) {
+  e.preventDefault();
+  moveUp()
+});
+
 
 let canvasWidth = 320;
 let canvasHeight = 560;
@@ -21,7 +38,7 @@ let canvasHeight = 560;
 cvs.width = canvasWidth;
 cvs.height = canvasHeight;
 let score = 0;
-let isGameOver = false;
+let isGameOver = true;
 let xPos = 10;
 let yPos = 200;
 let grav = 1;
@@ -66,9 +83,9 @@ pipeBottom.onload = checkLoaded;
 clutch.onload = checkLoaded;
 
 // Balloon creation
-function createBaloons(style, gameContent) {
-  const platformWidth = gameContent.clientWidth;
-  const platformHeight = gameContent.clientHeight;
+function createBaloons(style) {
+  const platformWidth = gamePlatform.clientWidth;
+  const platformHeight = gamePlatform.clientHeight;
   const halfHeight = platformHeight / 2;
   const totalBalloons = 9;
 
@@ -99,13 +116,25 @@ function createBaloons(style, gameContent) {
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
-  createBaloons("ballons", gamePlatform);
+  createBaloons("ballons" );
   hideBalloons();
   canfiti.classList.add("hidden");
 });
 
+function hideBalloons() {
+  document
+    .querySelectorAll(".ballons")
+    .forEach((b) => (b.style.display = "none"));
+  canfiti.classList.add("hidden");
+}
+
+function showBalloons() {
+  document.querySelectorAll(".ballons").forEach((b) => {
+    b.style.display = "block";
+  });
+}
+
 function draw() {
-console.log(adaptation.clientWidth);
   if (isGameOver) return;
   ctx.clearRect(0, 0, cvs.width, cvs.height);
   ctx.drawImage(bg, 0, 0);
@@ -134,12 +163,12 @@ console.log(adaptation.clientWidth);
       (yPos <= pipe[i].y + pipeH || yPos + birdH >= pipe[i].y + pipeH + gap)
     ) {
       isGameOver = true;
-      // endGames();
+      endGames();
     }
 
     if (yPos + birdH >= cvs.height) {
       isGameOver = true;
-      // endGames();
+      endGames();
     }
   }
 
@@ -164,18 +193,6 @@ function endGames() {
   }, 2000);
 }
 
-function hideBalloons() {
-  document
-    .querySelectorAll(".ballons")
-    .forEach((b) => (b.style.display = "none"));
-  canfiti.classList.add("hidden");
-}
-
-function showBalloons() {
-  document.querySelectorAll(".ballons").forEach((b) => {
-    b.style.display = "block";
-  });
-}
 
 startBtn.addEventListener("click", () => {
   startGame.classList.add("hidden");
@@ -202,7 +219,6 @@ playAgain.addEventListener("click", () => {
 });
 
 function waitForLoading(callback) {
-  showBalloons();
   const images = startGame.querySelectorAll("img");
   let loadedCount = 0;
 

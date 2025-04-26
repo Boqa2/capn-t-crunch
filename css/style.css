@@ -105,7 +105,8 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 50px;
+  letter-spacing: 4px;
+  left: 35px;
   color: white;
   font-size: 44px;
 }

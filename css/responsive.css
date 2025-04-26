@@ -1,31 +1,55 @@
 @media (max-width: 400px) {
-    * {
-      cursor: default;
-    }
-    body {
-        user-select: none;
-        pointer-events: auto;
-    }
-    .phone {
-      border-radius: 0;
-      border: 0;
-      width: 100%;
-      max-height: 100%;
-    }
-    .notch {
-      display: none;
-    }
-    .swipe {
-      display: none;
-    }
-    .screen {
-      cursor: none;
-      padding: 0;
-      height: 100%;
-      border-radius: 0;
-    }
-    .canvas-container{
-       width: 100%;
-       height: 100%;
-    }
+  * {
+    cursor: default;
   }
+  body {
+    user-select: none;
+    pointer-events: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .phone {
+    border-radius: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .text-hedding:nth-child(2){
+    font-size: 50px;
+    letter-spacing: 4px;
+  }
+  .start-game{
+    padding-top: 40px;
+  }
+  .notch {
+
+    display: none;
+  }
+  .clutch{
+    top: 10%;
+  }
+  .end-clutch{
+    top: 10%;
+    left: 10%;
+  }
+  .flare{
+    left: -40%;
+  }
+  .taping > .tap{
+    left: -50%;
+  }
+  .swipe {
+    display: none;
+  }
+  .screen {
+    cursor: none;
+    padding: 0;
+    height: 100%;
+    border-radius: 0;
+  }
+  .canvas-container {
+    width: 100%;
+    height: 100%;
+  }
+}
