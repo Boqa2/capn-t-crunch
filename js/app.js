@@ -10,27 +10,30 @@ const scr = document.querySelectorAll(".score");
 const gamePlatform = document.querySelector(".game-platform");
 const screen = document.querySelector(".screen");
 const adaptation = document.querySelector(".canvas-container");
+const video = document.querySelector(".video");
+const volume = document.querySelector(".volume");
 
 let cvs = document.querySelector(".canvas");
 let ctx = cvs.getContext("2d");
 
-document.addEventListener('touchstart', function (e) {
-  // Ожидаем, что это двойное касание или жест
-  if (e.touches.length > 1) {
-    e.preventDefault(); // Останавливаем масштабирование
-  }
-}, { passive: false });
+document.addEventListener(
+  "touchstart",
+  function (e) {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  },
+  { passive: false }
+);
 
-// Для предотвращения зума (если использовать gesture)
-document.addEventListener('gesturestart', function (e) {
-  e.preventDefault(); // Отключаем жесты масштабирования
+document.addEventListener("gesturestart", function (e) {
+  e.preventDefault();
 });
 
 games.addEventListener("touchstart", function (e) {
   e.preventDefault();
-  moveUp()
+  moveUp();
 });
-
 
 let canvasWidth = 320;
 let canvasHeight = 560;
@@ -96,11 +99,12 @@ function createBaloons(style) {
     balloon.alt = "";
     balloon.style.position = "absolute";
     balloon.classList.add("for-away");
-    
+    balloon.classList.add("hidden");
+
     const size = Math.floor(Math.random() * 40) + 20;
     balloon.style.width = size + "px";
     balloon.style.height = "auto";
-    
+
     if (i < 3) {
       balloon.style.top = "0px";
       balloon.style.left = Math.random() * (platformWidth - size) + "px";
@@ -111,12 +115,12 @@ function createBaloons(style) {
       balloon.style.left = platformWidth - size + "px";
       balloon.style.top = Math.random() * (halfHeight - size) + "px";
     }
-    
+
     gamePlatform.appendChild(balloon);
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
-  createBaloons("ballons" );
+  createBaloons("ballons");
   hideBalloons();
   canfiti.classList.add("hidden");
 });
@@ -193,7 +197,6 @@ function endGames() {
   }, 2000);
 }
 
-
 startBtn.addEventListener("click", () => {
   startGame.classList.add("hidden");
   games.classList.remove("hidden");
@@ -213,6 +216,7 @@ playAgain.addEventListener("click", () => {
   xPos = 10;
   yPos = 200;
   score = 0;
+  scr.forEach((el) => (el.textContent = score));
   pipe = [{ x: cvs.width, y: Math.floor(Math.random() * -150) }];
   draw();
   hideBalloons();
@@ -239,11 +243,66 @@ function waitForLoading(callback) {
     }
   });
 }
+let isHorizontal = window.innerHeight <= 400;
 
-waitForLoading(() => {
+function setVideoSource() {
+  if (isHorizontal) {
+    video.src = "assets/video/horizontall.mp4";
+  } else {
+    video.src = "assets/video/vertical.mp4";
+  }
+  video.load();
+  video.play();
+}
+
+setVideoSource();
+
+window.addEventListener("resize", () => {
+  const nowHorizontal = window.innerHeight <= 400;
+
+  if (nowHorizontal !== isHorizontal) {
+    isHorizontal = nowHorizontal;
+    setVideoSource();
+  }
+});
+let boolVolume = video.muted;
+
+volume.addEventListener("click", () => {
+  boolVolume = !boolVolume;
+  video.muted = boolVolume;
+  updateVolumeIcon();
+});
+
+function updateVolumeIcon() {
+  volume.innerHTML = "";
+  if (video.muted) {
+    volume.innerHTML = `<i class="bi bi-volume-mute-fill"></i>`;
+  } else {
+    volume.innerHTML = `<i class="bi bi-volume-up-fill"></i>`;
+  }
+}
+
+updateVolumeIcon();
+
+video.play();
+video.addEventListener("loadeddata", () => {
   loadingBlock.classList.add("hidden");
+  video.classList.remove("hidden");
+  video.play();
+});
+video.addEventListener("ended", () => {
+  video.classList.add("hidden");
   startGame.classList.remove("hidden");
   showBalloons();
+  video.pause();
+
+  waitForLoading(() => {
+    loadingBlock.classList.add("hidden");
+    startGame.classList.remove("hidden");
+    document
+      .querySelectorAll(".ballons")
+      .forEach((b) => (b.style.display = "block"));
+  });
 });
 
 scr.forEach((text) => (text.textContent = score));

@@ -19,6 +19,11 @@
     font-size: 50px;
     letter-spacing: 4px;
   }
+  .text-heddings{
+    font-size: 55px;
+    left: 15%;
+    letter-spacing: 4px;
+  }
   .start-game{
     padding-top: 40px;
   }
@@ -37,7 +42,7 @@
     left: -40%;
   }
   .taping > .tap{
-    left: -50%;
+    left: -270px;
   }
   .swipe {
     display: none;
