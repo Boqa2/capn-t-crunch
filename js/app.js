@@ -13,6 +13,8 @@ const adaptation = document.querySelector(".canvas-container");
 const video = document.querySelector(".video");
 const volume = document.querySelector(".volume");
 
+let allBalons = 12;
+
 let cvs = document.querySelector(".canvas");
 let ctx = cvs.getContext("2d");
 
@@ -47,16 +49,18 @@ let yPos = 200;
 let grav = 1;
 let gap = 170;
 let pipe = [];
+let spawnPipe = 80;
 pipe[0] = {
   x: cvs.width,
   y: Math.floor(Math.random() * -90),
 };
 
 // Sizes
-const birdW = 60,
-  birdH = 50;
-const pipeW = 60,
-  pipeH = 300;
+let birdW = 60;
+let birdH = 50;
+let pipeW = 60;
+let pipeH = 300;
+let move = 47;
 
 // Images
 let clutch = new Image();
@@ -90,7 +94,7 @@ function createBaloons(style) {
   const platformWidth = gamePlatform.clientWidth;
   const platformHeight = gamePlatform.clientHeight;
   const halfHeight = platformHeight / 2;
-  const totalBalloons = 9;
+  const totalBalloons = allBalons;
 
   for (let i = 0; i < totalBalloons; i++) {
     const balloon = document.createElement("img");
@@ -98,23 +102,15 @@ function createBaloons(style) {
     balloon.classList.add(style);
     balloon.alt = "";
     balloon.style.position = "absolute";
-    balloon.classList.add("for-away");
     balloon.classList.add("hidden");
 
     const size = Math.floor(Math.random() * 40) + 20;
     balloon.style.width = size + "px";
     balloon.style.height = "auto";
 
-    if (i < 3) {
-      balloon.style.top = "0px";
-      balloon.style.left = Math.random() * (platformWidth - size) + "px";
-    } else if (i < 6) {
-      balloon.style.left = "0px";
-      balloon.style.top = Math.random() * (halfHeight - size) + "px";
-    } else {
-      balloon.style.left = platformWidth - size + "px";
-      balloon.style.top = Math.random() * (halfHeight - size) + "px";
-    }
+    // Позиционируем случайно по верхней половине платформы
+    balloon.style.left = Math.random() * (platformWidth - size) + "px";
+    balloon.style.top = Math.random() * (halfHeight - size) + "px";
 
     gamePlatform.appendChild(balloon);
   }
@@ -149,10 +145,10 @@ function draw() {
 
     pipe[i].x--;
 
-    if (pipe[i].x === 100) {
+    if (pipe[i].x === spawnPipe) {
       pipe.push({
         x: cvs.width,
-        y: Math.floor(Math.random() * -180),
+        y: Math.floor(Math.random() * -100),
       });
     }
 
@@ -184,7 +180,7 @@ function draw() {
 }
 
 function moveUp() {
-  yPos -= 43;
+  yPos -= move;
 }
 screen.addEventListener("click", moveUp);
 
@@ -248,6 +244,7 @@ let isHorizontal = window.innerHeight <= 400;
 function setVideoSource() {
   if (isHorizontal) {
     video.src = "assets/video/horizontall.mp4";
+    allBalons = 20;
   } else {
     video.src = "assets/video/vertical.mp4";
   }
@@ -260,6 +257,21 @@ setVideoSource();
 window.addEventListener("resize", () => {
   const nowHorizontal = window.innerHeight <= 400;
 
+  if (nowHorizontal) {
+    birdH = 75;
+    birdW = 25;
+    pipeH = 320;
+    pipeW = 25;
+    gap = 170;
+    move = 37;
+    spawnPipe = 220;
+    console.log(birdH, birdW, pipeH, pipeW);
+  } else {
+    birdH = 60;
+    birdW = 40;
+    pipeH = 300;
+    pipeW = 60;
+  }
   if (nowHorizontal !== isHorizontal) {
     isHorizontal = nowHorizontal;
     setVideoSource();
@@ -295,6 +307,7 @@ video.addEventListener("ended", () => {
   startGame.classList.remove("hidden");
   showBalloons();
   video.pause();
+  volume.classList.add("hidden");
 
   waitForLoading(() => {
     loadingBlock.classList.add("hidden");

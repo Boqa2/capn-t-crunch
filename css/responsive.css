@@ -15,33 +15,32 @@
     width: 100%;
     height: 100%;
   }
-  .text-hedding:nth-child(2){
+  .text-hedding:nth-child(2) {
     font-size: 50px;
     letter-spacing: 4px;
   }
-  .text-heddings{
+  .text-heddings {
     font-size: 55px;
     left: 15%;
     letter-spacing: 4px;
   }
-  .start-game{
+  .start-game {
     padding-top: 40px;
   }
   .notch {
-
     display: none;
   }
-  .clutch{
+  .clutch {
     top: 10%;
   }
-  .end-clutch{
+  .end-clutch {
     top: 10%;
     left: 10%;
   }
-  .flare{
+  .flare {
     left: -40%;
   }
-  .taping > .tap{
+  .taping > .tap {
     left: -270px;
   }
   .swipe {
@@ -56,5 +55,72 @@
   .canvas-container {
     width: 100%;
     height: 100%;
+  }
+}
+
+@media (max-height: 400px) {
+  .phone {
+    width: 800px;
+    height: 100%;
+  }
+  .hedding {
+    width: 40%;
+    transform: rotate(0deg);
+    z-index: 5;
+  }
+  .ballons {
+    z-index: 1;
+  }
+  .notch {
+    display: none;
+  }
+  .swipe {
+    display: none;
+  }
+  .taps {
+    left: -50%;
+  }
+  .tap {
+    width: 450px;
+    font-size: 50px;
+    left: 50px;
+  }
+  .start-game {
+    align-items: center;
+    padding-top: 50px;
+  }
+  .clutch {
+    width: 0%;
+    top: -13%;
+    z-index: 3;
+  }
+  .captain {
+    width: 300px;
+    height: 300px;
+  }
+  .karobka{
+    width: 110px;
+  }
+  .miska{
+    width: 120px;
+    top: 55%;
+  }
+  .flare{
+    width: 400px;
+    top: -60px;
+  }
+  .canvas-container{
+    height: 100%;
+  }
+  .start-btn{
+    top: -70px;
+    left: 16%;
+  }
+  .text-heddings {
+    font-size: 52px;
+    left: 25%;
+  }
+  .end-game{
+    padding-top: 50px;
   }
 }
