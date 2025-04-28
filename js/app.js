@@ -14,6 +14,7 @@ const video = document.querySelector(".video");
 const volume = document.querySelector(".volume");
 
 let allBalons = 12;
+let lengthBallons = 2;
 
 let cvs = document.querySelector(".canvas");
 let ctx = cvs.getContext("2d");
@@ -94,7 +95,7 @@ function createBaloons(style) {
   const platformWidth = gamePlatform.clientWidth;
   const platformHeight = gamePlatform.clientHeight;
   const halfHeight = platformHeight / 2;
-  const totalBalloons = allBalons;
+  const totalBalloons = 20;
 
   for (let i = 0; i < totalBalloons; i++) {
     const balloon = document.createElement("img");
@@ -102,7 +103,7 @@ function createBaloons(style) {
     balloon.classList.add(style);
     balloon.alt = "";
     balloon.style.position = "absolute";
-    balloon.classList.add("hidden");
+    balloon.classList.add("for-away");
 
     const size = Math.floor(Math.random() * 40) + 20;
     balloon.style.width = size + "px";
@@ -119,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
   createBaloons("ballons");
   hideBalloons();
   canfiti.classList.add("hidden");
+  volume.classList.add("hidden");
 });
 
 function hideBalloons() {
@@ -242,17 +244,25 @@ function waitForLoading(callback) {
 let isHorizontal = window.innerHeight <= 400;
 
 function setVideoSource() {
+  const currentTime = video.currentTime;
+
   if (isHorizontal) {
     video.src = "assets/video/horizontall.mp4";
     allBalons = 20;
   } else {
     video.src = "assets/video/vertical.mp4";
+    allBalons = 12;
   }
-  video.load();
-  video.play();
-}
 
-setVideoSource();
+  video.addEventListener(
+    "loadedmetadata",
+    () => {
+      video.currentTime = currentTime;
+      video.play();
+    },
+    { once: true }
+  );
+}
 
 window.addEventListener("resize", () => {
   const nowHorizontal = window.innerHeight <= 400;
@@ -265,12 +275,15 @@ window.addEventListener("resize", () => {
     gap = 170;
     move = 37;
     spawnPipe = 220;
+    lengthBallons = 1;
     console.log(birdH, birdW, pipeH, pipeW);
   } else {
     birdH = 60;
     birdW = 40;
     pipeH = 300;
     pipeW = 60;
+    spawnPipe = 100;
+    lengthBallons = 2;
   }
   if (nowHorizontal !== isHorizontal) {
     isHorizontal = nowHorizontal;
@@ -300,6 +313,7 @@ video.play();
 video.addEventListener("loadeddata", () => {
   loadingBlock.classList.add("hidden");
   video.classList.remove("hidden");
+  volume.classList.remove("hidden");
   video.play();
 });
 video.addEventListener("ended", () => {

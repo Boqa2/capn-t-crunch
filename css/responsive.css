@@ -15,17 +15,23 @@
     width: 100%;
     height: 100%;
   }
+  .tap {
+    width: 120%;
+    transform: scale(0.9) translate(-50%, 0);
+    left: 45%;
+  }
   .text-hedding:nth-child(2) {
     font-size: 50px;
     letter-spacing: 4px;
   }
   .text-heddings {
-    font-size: 55px;
-    left: 15%;
-    letter-spacing: 4px;
+  }
+  .img-hedding {
+    width: 300px;
   }
   .start-game {
     padding-top: 40px;
+    z-index: 3;
   }
   .notch {
     display: none;
@@ -62,6 +68,12 @@
   .phone {
     width: 800px;
     height: 100%;
+    border-radius: 0;
+    border: 0;
+  }
+  .screen {
+    border-radius: 0;
+    border: 0;
   }
   .hedding {
     width: 40%;
@@ -98,29 +110,67 @@
     width: 300px;
     height: 300px;
   }
-  .karobka{
+  .karobka {
     width: 110px;
   }
-  .miska{
+  .miska {
     width: 120px;
-    top: 55%;
+    top: 83px;
   }
-  .flare{
+  .flare {
     width: 400px;
     top: -60px;
   }
-  .canvas-container{
+  .canvas-container {
     height: 100%;
   }
-  .start-btn{
+  .start-btn {
     top: -70px;
     left: 16%;
   }
   .text-heddings {
-    font-size: 52px;
-    left: 25%;
+    font-size: 50px;
   }
-  .end-game{
+  .end-game {
     padding-top: 50px;
+  }
+  .game {
+    padding: 40px 0;
+  }
+  .end-clutch {
+    width: 50%;
+    top: -100px;
+  }
+  .again {
+    flex-direction: row;
+    bottom: 3%;
+  }
+  .taping {
+    justify-content: end;
+    right: 100px;
+    width: 100%;
+    display: flex;
+  }
+  .end-score {
+    order: 1;
+  }
+  .tapi {
+    width: 250px;
+    transform: scale(0.9) translate(-20%, 0);
+    left: 20%;
+  }
+  .end-clutch > .captain {
+    width: 250px;
+  }
+  .end-clutch > .karobka {
+    width: 90px;
+    left: 30px;
+  }
+  .end-clutch > .miska {
+    width: 90px;
+    left: 30px;
+  }
+  .end-clutch > .flare {
+    left: 0;
   }
 }
