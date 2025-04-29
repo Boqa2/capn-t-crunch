@@ -139,7 +139,7 @@
   }
   .end-clutch {
     width: 50%;
-    top: -100px;
+    top: -150px;
   }
   .again {
     flex-direction: row;
@@ -172,5 +172,11 @@
   }
   .end-clutch > .flare {
     left: 0;
+  }
+  .end-score{
+    display: grid;
+  }
+  .score{
+    font-size: 80px;
   }
 }
