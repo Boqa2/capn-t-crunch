@@ -134,9 +134,7 @@
   .end-game {
     padding-top: 50px;
   }
-  .game {
-    padding: 40px 0;
-  }
+
   .end-clutch {
     width: 50%;
     top: -150px;
@@ -174,9 +172,11 @@
     left: 0;
   }
   .end-score{
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
-  .score{
-    font-size: 80px;
-  }
+  
 }

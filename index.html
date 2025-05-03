@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1"
-    />
+    <meta name="viewport" content="width=device-width" />
     <title>Cap'n Crunch</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
@@ -29,7 +26,7 @@
             <div class="loading"></div>
             <span class="ani">loading...</span>
           </div>
-          <div class="start-game hidden">
+          <div class="start-game ">
             <div class="hedding">
               <p class="text-hedding">CELEBRATING 60 YEARS OF</p>
               <div>
@@ -63,18 +60,20 @@
               <button class="start-btn">Play Now</button>
             </div>
           </div>
-          <div class="game">
-            <div class="logo-content">
-              <img
-                src="assets/image/Cap_N_Crunch_2006 copy 4.png"
-                class="logos"
-                alt=""
-              />
+          <div class="game-container hidden">
+            <div class="game">
+              <div class="cap">
+                <img class="caps" src="assets/image/Layer 6.png" alt="" />
+              </div>
+              <div class="bg"></div>
+              <div class="pipes"></div>
+              <div class="atrs">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="timer-container">
+                  <span class="time">10</span> sec
+                </div>
+              </div>
             </div>
-            <div class="canvas-container">
-              <canvas class="canvas"></canvas>
-            </div>
-            <div class="cont-score">Score :<span class="score"> 0</span></div>
           </div>
           <div class="end-game hidden">
             <img class="cnft hidden" src="assets/image/cnft.png" alt="" />
@@ -92,9 +91,9 @@
                 <p class="text-hedding">GOOD TIMES</p>
               </div>
               <div class="taping">
-                <div class="tapi">Great Job, Matey!</div>
+                <div class="tapi">Great Job</div>
                 <div class="end-score">
-                  score : <span class="score">0</span>
+                  score : <span id="score" class="score">0</span>
                 </div>
               </div>
               <div class="end-clutch">
