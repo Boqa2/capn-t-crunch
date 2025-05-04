@@ -26,13 +26,22 @@ let pipeInterval;
 let isGameOver = true;
 let score = 0;
 let timer = 20;
-
+let allowAutoStart = false;
+let autoStartTimerId = null;
+let isGameStarted = false;
 let gravity = 2;
 let velocity = 0;
 const jumpForce = -8;
 let isHorizontal = window.innerHeight <= 400;
 let boolVolume = video.muted;
 let timerInterval;
+let pipeLeft = 320;
+let pipeGap = 220;
+let spawnRate = 2000;
+let movePipe = 2;
+let maxPipeHeight = 200;
+let minPipeHeight = 60;
+let jumpValue = 80
 
 // Event Listeners
 document.addEventListener(
@@ -55,7 +64,12 @@ screen.addEventListener("click", () => {
   if (!isGameOver) velocity = jumpForce;
 });
 
-startBtn.addEventListener("click", start_Game);
+startBtn.addEventListener("click", () => {
+  if (autoStartTimerId) {
+    clearTimeout(autoStartTimerId);
+  }
+  start_Game();
+});
 
 playAgain.addEventListener("click", () => {
   endGame.classList.add("hidden");
@@ -74,12 +88,24 @@ window.addEventListener("resize", () => {
   const nowHorizontal = window.innerHeight <= 400;
 
   if (nowHorizontal) {
-    move = 37;
-    spawnPipe = 220;
-    lengthBallons = 1;
+    pipeLeft = 280;
+    pipeGap = 160;
+    spawnRate = 1600;
+    movePipe = 1.8;
+    birdTop = 150;
+    maxPipeHeight = 120;
+    jumpValue = 60
+    minPipeHeight = 30;
   } else {
-    spawnPipe = 100;
+    pipeLeft = 320;
+    pipeGap = 220;
+    spawnRate = 2000;
+    birdTop = 200;
     lengthBallons = 2;
+    maxPipeHeight = 200;
+    minPipeHeight = 60;
+    jumpValue = 80
+    movePipe = 2;
   }
 
   if (nowHorizontal !== isHorizontal) {
@@ -95,6 +121,8 @@ let frameId;
 forTime.textContent = timer;
 
 function start_Game() {
+  if (!allowAutoStart) return;
+
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
   cancelAnimationFrame(frameId);
@@ -116,8 +144,8 @@ function start_Game() {
   endGame.classList.add("hidden");
   canfiti.classList.add("hidden");
   hideBalloons();
-
   spawnPipe();
+  spawnInterval = setInterval(spawnPipe, spawnRate);
 
   timerInterval = setInterval(() => {
     if (timer > 0) {
@@ -127,8 +155,6 @@ function start_Game() {
       endGames();
     }
   }, 1000);
-
-  spawnInterval = setInterval(spawnPipe, 2000);
 
   frameId = requestAnimationFrame(gameLoop);
 }
@@ -165,21 +191,22 @@ function gameLoop() {
 }
 
 function spawnPipe() {
-  const gap = 220;
-  const topPipeHeight = Math.floor(Math.random() * 200) + 60;
+  const gap = pipeGap;
+  const topPipeHeight =
+    Math.floor(Math.random() * maxPipeHeight) + minPipeHeight;
   const bottomPipeHeight = gamePlatform.clientHeight - topPipeHeight - gap;
 
   const topPipe = document.createElement("div");
   topPipe.classList.add("pipe", "top");
   topPipe.style.height = topPipeHeight + "px";
-  topPipe.style.left = gameContainer.clientWidth + 20 + "px";
+  topPipe.style.left = gameContainer.clientWidth + 20 + "px"; // нормальное расстояние от птицы
   topPipe.style.top = "0";
   topPipe.style.position = "absolute";
 
   const bottomPipe = document.createElement("div");
   bottomPipe.classList.add("pipe", "bottom");
   bottomPipe.style.height = bottomPipeHeight + "px";
-  bottomPipe.style.left = "320px";
+  bottomPipe.style.left = gameContainer.clientWidth + 20 + "px"; // тоже нормальное
   bottomPipe.style.bottom = "0";
   bottomPipe.style.position = "absolute";
 
@@ -192,18 +219,23 @@ function spawnPipe() {
 function movePipes() {
   pipes.forEach((pair) => {
     let left = parseInt(pair.top.style.left);
-    left -= 2;
+    left -= movePipe;
     pair.top.style.left = left + "px";
     pair.bottom.style.left = left + "px";
+    const pipeWidth = pair.top.offsetWidth;
 
-    if (!pair.passed && left + 60 < 50) {
+    if (!pair.passed && left + pipeWidth < bird.offsetLeft) {
       score++;
       scr.forEach((el) => (el.textContent = score));
       pair.passed = true;
     }
 
-    if (left + 60 < 0) {
+    console.log(pipeWidth);
+    
+    if (left + pipeWidth < 0) {
       pair.top.remove();
+      console.log("deletr");
+      
       pair.bottom.remove();
     }
   });
@@ -245,7 +277,7 @@ function jump(value) {
 }
 
 screen.addEventListener("click", () => jump(50));
-screen.addEventListener("touchstart", () => jump(80));
+screen.addEventListener("touchstart", () => jump(jumpValue));
 
 function createBaloons(style) {
   const platformWidth = gamePlatform.clientWidth;
@@ -328,9 +360,13 @@ video.addEventListener("ended", () => {
   video.pause();
   volume.classList.add("hidden");
 
-  setTimeout(() => {
-    start_Game();
-  }, 7000);
+  allowAutoStart = true;
+
+  autoStartTimerId = setTimeout(() => {
+    if (!isGameStarted) {
+      start_Game();
+    }
+  }, 5000);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
